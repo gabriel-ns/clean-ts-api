@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt'
+import { HashComparer } from '../../data/protocols/crypto/hash-comparer'
 import { Hasher } from '../../data/protocols/crypto/hasher'
 
-export class BcryptAdapter implements Hasher {
+export class BcryptAdapter implements Hasher, HashComparer {
   private readonly salt: number
   constructor (salt: number) {
     this.salt = salt
