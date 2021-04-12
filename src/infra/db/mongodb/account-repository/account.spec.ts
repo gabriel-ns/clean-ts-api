@@ -2,6 +2,12 @@ import { Collection } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { AccountMongoRepository } from './account'
 
+const makeFakeUserData = (): any => ({
+  name: 'any_name',
+  email: 'any@email.com',
+  password: 'any_password'
+})
+
 const makeSut = (): AccountMongoRepository => {
   return new AccountMongoRepository()
 }
@@ -24,32 +30,23 @@ describe('Account Mongo Repository', () => {
 
   test('Should return an account on add success', async () => {
     const sut = makeSut()
-    const account = await sut.add({
-      name: 'any_name',
-      email: 'any@email.com',
-      password: 'any_password'
-    })
+    const account = await sut.add(makeFakeUserData())
     expect(account).toBeTruthy()
     expect(account.id).toBeTruthy()
-    expect(account.name).toBe('any_name')
-    expect(account.email).toBe('any@email.com')
-    expect(account.password).toBe('any_password')
+    expect(account.name).toBe(makeFakeUserData().name)
+    expect(account.email).toBe(makeFakeUserData().email)
+    expect(account.password).toBe(makeFakeUserData().password)
   })
 
   test('Should return an account on loadByEmail success', async () => {
     const sut = makeSut()
-    const userFakeAccount = {
-      name: 'any_name',
-      email: 'any@email.com',
-      password: 'any_password'
-    }
-    await accountCollection.insertOne(userFakeAccount)
+    await accountCollection.insertOne(makeFakeUserData())
     const account = await sut.loadByEmail('any@email.com')
     expect(account).toBeTruthy()
     expect(account.id).toBeTruthy()
-    expect(account.name).toBe('any_name')
-    expect(account.email).toBe('any@email.com')
-    expect(account.password).toBe('any_password')
+    expect(account.name).toBe(makeFakeUserData().name)
+    expect(account.email).toBe(makeFakeUserData().email)
+    expect(account.password).toBe(makeFakeUserData().password)
   })
 
   test('Should return null when loadByEmail fails', async () => {
@@ -60,12 +57,7 @@ describe('Account Mongo Repository', () => {
 
   test('Should update the account accessToken on updateAccessToken success', async () => {
     const sut = makeSut()
-    const userFakeAccountData = {
-      name: 'any_name',
-      email: 'any@email.com',
-      password: 'any_password'
-    }
-    const res = await accountCollection.insertOne(userFakeAccountData)
+    const res = await accountCollection.insertOne(makeFakeUserData())
     const dbFakeAccount = res.ops[0]
     expect(dbFakeAccount.accessToken).toBeFalsy()
     await sut.updateAccessToken(dbFakeAccount._id, 'any_token')
