@@ -1,5 +1,4 @@
 import { AccountModel } from '../../../usescases/add-account/db-add-account-protocols'
-
-export interface LoadAccountByEmailRepository {
-  loadByEmail (email: string): Promise<AccountModel>
+export interface LoadAccountByTokenRepository {
+  loadByToken (token: string, role?: string): Promise<AccountModel>
 }
