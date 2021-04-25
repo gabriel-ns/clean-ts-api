@@ -2,6 +2,8 @@ import { HttpRequest, Controller, Validation, AddSurveyModel } from './add-surve
 import { AddSurveyController } from './add-survey-controller'
 import { badRequest, serverError, noContent } from '../../../helpers/http/http-helper'
 import { AddSurvey } from '../../../../domain/usecases/add-survey'
+import MockDate from 'mockdate'
+
 const makeFakeRequest = (): HttpRequest => ({
   body: {
     question: 'any_question',
@@ -48,6 +50,16 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Add Survey Controller', () => {
+  let fakeDate: Date
+  beforeAll(() => {
+    fakeDate = new Date()
+    MockDate.set(fakeDate)
+  })
+
+  afterAll(() => {
+    MockDate.reset()
+  })
+
   test('Should call validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
@@ -69,7 +81,10 @@ describe('Add Survey Controller', () => {
     const addSpy = jest.spyOn(addSurveyStub, 'add')
     const httpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
-    expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
+    expect(addSpy).toHaveBeenCalledWith({
+      ...httpRequest.body,
+      date: fakeDate
+    })
   })
 
   test('Should return 500 if AddSurvey throws', async () => {
