@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/gabriel-ns/clean-ts-api.svg?branch=master)](https://travis-ci.com/gabriel-ns/clean-ts-api)
+[![Coverage Status](https://coveralls.io/repos/github/gabriel-ns/clean-ts-api/badge.svg)](https://coveralls.io/github/gabriel-ns/clean-ts-api)
 # **Clean Node API**
 
 Essa API faz parte do treinamento do professor Rodrigo Manguinho (Mango) na Udemy.
