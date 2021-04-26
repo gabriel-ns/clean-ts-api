@@ -6,6 +6,29 @@ import { sign } from 'jsonwebtoken'
 import env from '../config/env'
 import { AddSurveyModel } from '../../domain/usecases/add-survey'
 
+let surveyCollection: Collection
+let accountCollection: Collection
+
+const makeAccessToken = async (role?: string): Promise<string> => {
+  const res = await accountCollection.insertOne({
+    name: 'any_name',
+    email: 'any@email.com',
+    password: '123',
+    role
+  })
+
+  const id = res.ops[0]._id
+  const accessToken = sign({ _id: id }, env.jwtSecret)
+  await accountCollection.updateOne({
+    _id: id
+  }, {
+    $set: {
+      accessToken
+    }
+  })
+  return accessToken
+}
+
 const makeFakeSurveyData = (): AddSurveyModel => ({
   question: 'any_question',
   answers: [{
@@ -19,8 +42,6 @@ const makeFakeSurveyData = (): AddSurveyModel => ({
 })
 
 describe('Login routes', () => {
-  let surveyCollection: Collection
-  let accountCollection: Collection
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
   })
@@ -53,22 +74,7 @@ describe('Login routes', () => {
     })
 
     test('Should return 204 on add survey with valid token', async () => {
-      const res = await accountCollection.insertOne({
-        name: 'any_name',
-        email: 'any@email.com',
-        password: '123',
-        role: 'admin'
-      })
-
-      const id = res.ops[0]._id
-      const accessToken = sign({ _id: id }, env.jwtSecret)
-      await accountCollection.updateOne({
-        _id: id
-      }, {
-        $set: {
-          accessToken
-        }
-      })
+      const accessToken = await makeAccessToken('admin')
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken)
@@ -93,21 +99,7 @@ describe('Login routes', () => {
     })
 
     test('Should return 200 on load surveys with valid access token', async () => {
-      const res = await accountCollection.insertOne({
-        name: 'any_name',
-        email: 'any@email.com',
-        password: '123'
-      })
-
-      const id = res.ops[0]._id
-      const accessToken = sign({ _id: id }, env.jwtSecret)
-      await accountCollection.updateOne({
-        _id: id
-      }, {
-        $set: {
-          accessToken
-        }
-      })
+      const accessToken = await makeAccessToken()
       await surveyCollection.insertOne(makeFakeSurveyData())
       await request(app)
         .get('/api/surveys')
