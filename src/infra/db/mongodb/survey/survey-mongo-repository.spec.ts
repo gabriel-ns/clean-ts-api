@@ -64,4 +64,20 @@ describe('Survey Mongo Repository', () => {
       expect(surveys.length).toBe(0)
     })
   })
+
+  describe('Load Survey By Id', () => {
+    test('Should load survey by id on success', async () => {
+      const res = await surveyCollection.insertOne(makeFakeSurveyData())
+      const id = res.ops[0]._id
+      const sut = makeSut()
+      const survey = await sut.loadById(id)
+      expect(survey).toBeTruthy()
+    })
+
+    test('Should return null if survey is not found', async () => {
+      const sut = makeSut()
+      const survey = await sut.loadById('any_id')
+      expect(survey).toBeNull()
+    })
+  })
 })
