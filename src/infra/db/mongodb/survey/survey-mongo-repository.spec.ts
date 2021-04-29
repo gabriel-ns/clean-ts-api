@@ -53,6 +53,8 @@ describe('Survey Mongo Repository', () => {
       const sut = makeSut()
       const surveys = await sut.loadAll()
       expect(surveys.length).toBe(2)
+      expect(surveys[0].id).toBeTruthy()
+      expect(surveys[1].id).toBeTruthy()
       expect(surveys[0].question).toBe(fakeSurveys[0].question)
       expect(surveys[1].question).toBe(fakeSurveys[1].question)
     })
@@ -72,6 +74,7 @@ describe('Survey Mongo Repository', () => {
       const sut = makeSut()
       const survey = await sut.loadById(id)
       expect(survey).toBeTruthy()
+      expect(survey.id).toBeTruthy()
     })
 
     test('Should return null if survey is not found', async () => {
