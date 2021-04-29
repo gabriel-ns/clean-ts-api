@@ -1,4 +1,4 @@
-import { SaveSurveyResultRespository } from '@/data/usescases/save-survey-result/db-save-survey-result-protocols'
+import { SaveSurveyResultRespository, SurveyResultModel } from '@/data/usescases/save-survey-result/db-save-survey-result-protocols'
 import { AccountModel } from '@/domain/models/account'
 import { SurveyModel } from '@/domain/models/survey'
 import { AddAccountModel } from '@/domain/usecases/add-account'
@@ -77,6 +77,30 @@ describe('Survey Mongo Repository', () => {
       expect(surveyResult).toBeTruthy()
       expect(surveyResult.id).toBeTruthy()
       expect(surveyResult.answer).toBe(survey.answers[0].answer)
+    })
+
+    test('Should update a survey result if its not new', async () => {
+      const sut = makeSut()
+      const survey = await makeSurvey()
+      const account = await makeAccount()
+      const res = await surveysResultCollection.insertOne({
+        surveyId: survey.id,
+        accountId: account.id,
+        answer: survey.answers[0].answer,
+        date: new Date()
+      })
+
+      const existingSurveyResult = MongoHelper.map(res.ops[0]) as SurveyResultModel
+
+      const surveyResult = await sut.save({
+        surveyId: survey.id,
+        accountId: account.id,
+        answer: survey.answers[0].answer,
+        date: new Date()
+      })
+
+      expect(surveyResult).toBeTruthy()
+      expect(surveyResult.id).toEqual(existingSurveyResult.id)
     })
   })
 })
