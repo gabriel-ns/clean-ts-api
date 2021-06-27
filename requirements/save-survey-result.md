@@ -4,9 +4,9 @@
 1. ⛔️ Recebe uma requisição do tipo **PUT** na rota **/api/surveys/{survey_id}/results**
 1. ⛔️ Valida se a requisição foi feita por um **usuário**
 1. ✅ Valida o parâmetro **survey_id**
-1. ⛔️ Valida se o campo **answer** é uma resposta válida
-1. ⛔️ **Cria** um resultado de enquete com os dados fornecidos
-1. ⛔️ **Atualiza** um resultado de enquete com os dados fornecidos caso já tenha um registro
+1. ✅ Valida se o campo **answer** é uma resposta válida
+1. ✅ **Cria** um resultado de enquete com os dados fornecidos
+1. ✅ **Atualiza** um resultado de enquete com os dados fornecidos caso já tenha um registro
 1. ⛔️ Retorna **200** com os dados do resultado da enquete
 
 > ## Exceções:
