@@ -79,7 +79,7 @@ describe('Survey Mongo Repository', () => {
 
     test('Should return null if survey is not found', async () => {
       const sut = makeSut()
-      const survey = await sut.loadById('any_id')
+      const survey = await sut.loadById('000000000000000000000000')
       expect(survey).toBeNull()
     })
   })
