@@ -13,7 +13,7 @@
 1. ⛔️ Retorna erro **404** se a API não existir
 1. ⛔️ Retorna erro **403** se não for um usuário
 1. ✅ Retorna erro **403** se o **survey_id** for inválido
-1. ⛔️ Retorna erro **403** se o campo **answer** for inválido
-1. ⛔️ Retorna erro **500** se der erro ao tentar criar o resultado da enquete
-1. ⛔️ Retorna erro **500** se der erro ao tentar atualizar o resultado da enquete
+1. ✅ Retorna erro **403** se o campo **answer** for inválido
+1. ✅ Retorna erro **500** se der erro ao tentar criar o resultado da enquete
+1. ✅ Retorna erro **500** se der erro ao tentar atualizar o resultado da enquete
 1. ✅ Retorna erro **500** se der erro ao tentar carregar a enquete
