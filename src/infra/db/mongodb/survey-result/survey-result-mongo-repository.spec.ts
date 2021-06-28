@@ -1,8 +1,7 @@
 import { SaveSurveyResultRespository, SurveyResultModel } from '@/data/usescases/survey-result/save-survey-result/db-save-survey-result-protocols'
 import { AccountModel } from '@/domain/models/account'
 import { SurveyModel } from '@/domain/models/survey'
-import { AddAccountParams } from '@/domain/usecases/account/add-account'
-import { AddSurveyParams } from '@/domain/usecases/survey/add-survey'
+import { mockAddAccountParams, mockAddSurveyParams } from '@/domain/test'
 import { Collection } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository'
@@ -11,31 +10,13 @@ let surveysCollection: Collection
 let accountsCollection: Collection
 let surveysResultCollection: Collection
 
-const makeFakeUserData = (): AddAccountParams => ({
-  name: 'any_name',
-  email: 'any@email.com',
-  password: 'any_password'
-})
-
-const makeFakeSurveyData = (): AddSurveyParams => ({
-  question: 'any_question',
-  answers: [{
-    image: 'any_image',
-    answer: 'any_answer'
-  }, {
-    answer: 'other_answer',
-    image: 'any_image'
-  }],
-  date: new Date()
-})
-
 const makeAccount = async (): Promise<AccountModel> => {
-  const res = await accountsCollection.insertOne(makeFakeUserData())
+  const res = await accountsCollection.insertOne(mockAddAccountParams())
   return MongoHelper.map(res.ops[0])
 }
 
 const makeSurvey = async (): Promise<SurveyModel> => {
-  const res = await surveysCollection.insertOne(makeFakeSurveyData())
+  const res = await surveysCollection.insertOne(mockAddSurveyParams())
   return MongoHelper.map(res.ops[0])
 }
 
