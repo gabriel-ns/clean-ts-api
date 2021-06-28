@@ -4,7 +4,7 @@ import {
   UpdateAccessTokenRepository,
   Encrypter,
   LoadAccountByEmailRepository,
-  AuthenticationModel
+  AuthenticationParams
 } from './db-authentication-protocols'
 import { DbAuthentication } from './db-authentication'
 
@@ -15,7 +15,7 @@ const makeFakeAccount = (): AccountModel => ({
   password: 'hashed_password'
 })
 
-const makeFakeAuthentication = (): AuthenticationModel => ({
+const makeFakeAuthentication = (): AuthenticationParams => ({
   email: 'any@email.com',
   password: 'any_password'
 })
