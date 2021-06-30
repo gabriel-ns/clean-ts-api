@@ -1,9 +1,10 @@
 import request from 'supertest'
 import app from '../config/app'
+import { noCache } from './no-cache'
 
 describe('NoCache middleware', () => {
   test('Should disable cache', async () => {
-    app.get('/test_no_cache', (req, res) => {
+    app.get('/test_no_cache', noCache, (req, res) => {
       res.send()
     })
 
