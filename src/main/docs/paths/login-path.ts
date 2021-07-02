@@ -22,26 +22,10 @@ export const loginPath = {
           }
         }
       },
-      400: {
-        description: 'Erro de na requisição. Parâmetros inválidos.',
-        content: {
-          'application/json': {
-            schema: {
-              $ref: '#/schemas/error'
-            }
-          }
-        }
-      },
-      401: {
-        description: 'Erro de autenticação. Usuário ou senha errados',
-        content: {
-          'application/json': {
-            schema: {
-              $ref: '#/schemas/error'
-            }
-          }
-        }
-      }
+      400: { $ref: '#/components/badRequest' },
+      401: { $ref: '#/components/unauthorized' },
+      404: { $ref: '#/components/notFound' },
+      500: { $ref: '#/components/serverError' }
     }
   }
 }
