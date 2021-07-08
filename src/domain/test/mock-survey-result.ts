@@ -1,5 +1,6 @@
 import { SaveSurveyResultParams } from '@/domain/usecases/survey-result/save-survey-result'
 import { SurveyResultModel } from '@/domain/models/survey-result'
+import { LoadSurveyResult } from '@/data/usescases/survey-result/load-survey-result/db-load-survey-result-protocols'
 
 export const mockSaveSurveyResultParams = (): SaveSurveyResultParams => {
   return {
@@ -26,4 +27,13 @@ export const mockSurveyResultModel = (): SurveyResultModel => {
     }],
     date: new Date()
   }
+}
+
+export const mockLoadSurveyResult = (): LoadSurveyResult => {
+  class LoadSurveyResultStub implements LoadSurveyResult {
+    async load (surveyId: string): Promise<SurveyResultModel> {
+      return Promise.resolve(mockSurveyResultModel())
+    }
+  }
+  return new LoadSurveyResultStub()
 }
