@@ -29,7 +29,7 @@ const makeAccessToken = async (role?: string): Promise<string> => {
   return accessToken
 }
 
-const makeFakeSurveyData = (): AddSurveyParams => ({
+const mockSurveyData = (): AddSurveyParams => ({
   question: 'any_question',
   answers: [{
     image: 'any_image',
@@ -100,7 +100,7 @@ describe('Login routes', () => {
 
     test('Should return 200 on load surveys with valid access token', async () => {
       const accessToken = await makeAccessToken()
-      await surveyCollection.insertOne(makeFakeSurveyData())
+      await surveyCollection.insertOne(mockSurveyData())
       await request(app)
         .get('/api/surveys')
         .set('x-access-token', accessToken)
