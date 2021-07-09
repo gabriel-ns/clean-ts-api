@@ -1,6 +1,6 @@
 import { EmailInUseError, MissingParamError, ServerError } from '@/presentation/errors'
 import { AddAccount, Validation, Authentication } from './signup-controller-protocols'
-import { mockAddAccount, mockAuthentication, mockAuthToken } from '@/presentation/test'
+import { mockAddAccount, mockAuthentication, mockAuthenticationModel } from '@/presentation/test'
 import { SignUpController } from './signup-controller'
 import { HttpRequest } from '@/presentation/protocols'
 import { ok, serverError, badRequest, forbidden } from '@/presentation/helpers/http/http-helper'
@@ -70,7 +70,7 @@ describe('SignUp Controller', () => {
     const { sut } = makeSut()
     const httpRequest = mockRequest()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(ok({ accessToken: mockAuthToken() }))
+    expect(httpResponse).toEqual(ok(mockAuthenticationModel()))
   })
 
   test('Should call Validation with correct value', async () => {

@@ -2,7 +2,7 @@ import { Validation, HttpRequest, Authentication } from './login-controller-prot
 import { MissingParamError } from '@/presentation/errors'
 import { badRequest, ok, serverError, unauthorized } from '@/presentation/helpers/http/http-helper'
 import { LoginController } from './login-controller'
-import { mockAuthentication, mockAuthToken } from '@/presentation/test'
+import { mockAuthentication, mockAuthenticationModel } from '@/presentation/test'
 import { mockValidation } from '@/validation/test'
 
 const mockRequest = (): HttpRequest => ({
@@ -57,7 +57,7 @@ describe('Login Controller', () => {
   test('Should return 200 if valid credentials provided', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(ok({ accessToken: mockAuthToken() }))
+    expect(httpResponse).toEqual(ok(mockAuthenticationModel()))
   })
 
   test('Should call Validation with correct value', async () => {
