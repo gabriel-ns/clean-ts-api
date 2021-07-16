@@ -15,6 +15,10 @@ export const surveySchema = {
     },
     date: {
       type: 'string'
+    },
+    isAnswered: {
+      type: 'boolean'
     }
-  }
+  },
+  required: ['id', 'question', 'answers', 'date']
 }
