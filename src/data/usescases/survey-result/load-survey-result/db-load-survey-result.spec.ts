@@ -32,17 +32,17 @@ describe('DbLoadSurveyResult Usecase', () => {
     MockDate.reset()
   })
 
-  test('Should call LoadSurveyResultRepository with correct params', async () => {
+  test('Should call LoadSurveyResultRepository with correct values', async () => {
     const { sut, loadSurveyResultRepositoryStub } = makeSut()
     const loadBySurveyIdSpy = jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId')
-    await sut.load('any_survey_id')
-    expect(loadBySurveyIdSpy).toHaveBeenCalledWith('any_survey_id')
+    await sut.load('any_survey_id', 'any_account_id')
+    expect(loadBySurveyIdSpy).toHaveBeenCalledWith('any_survey_id', 'any_account_id')
   })
 
   test('Should throw if LoadSurveyResultRepository throws', async () => {
     const { sut, loadSurveyResultRepositoryStub } = makeSut()
     jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId').mockRejectedValueOnce(new Error())
-    const promise = sut.load('any_survey_id')
+    const promise = sut.load('any_survey_id', 'any_account_id')
     await expect(promise).rejects.toThrow()
   })
 
@@ -50,25 +50,30 @@ describe('DbLoadSurveyResult Usecase', () => {
     const { sut, loadSurveyResultRepositoryStub, loadSurveyByIdRepositoryStub } = makeSut()
     jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId').mockResolvedValueOnce(null)
     const loadByIdSpy = jest.spyOn(loadSurveyByIdRepositoryStub, 'loadById')
-    await sut.load('any_survey_id')
+    await sut.load('any_survey_id', 'any_account_id')
     expect(loadByIdSpy).toHaveBeenCalledWith('any_survey_id')
   })
 
   test('Should return SurveyResultModel with all answers counting 0 if LoadSurveyResultRepository returns null', async () => {
     const { sut, loadSurveyResultRepositoryStub } = makeSut()
     jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId').mockResolvedValueOnce(null)
-    const surveyResult = await sut.load('any_survey_id')
+    const surveyResult = await sut.load('any_survey_id', 'any_account_id')
     expect(surveyResult).toEqual({
       surveyId: mockSurveyModel().id,
       question: mockSurveyModel().question,
       date: mockSurveyModel().date,
-      answers: mockSurveyModel().answers.map(answer => ({ ...answer, percent: 0, count: 0 }))
+      answers: mockSurveyModel().answers.map(answer => ({
+        ...answer,
+        percent: 0,
+        count: 0,
+        isCurrentAnswer: false
+      }))
     })
   })
 
   test('Should return SurveyResultModel on success', async () => {
     const { sut } = makeSut()
-    const surveyResult = await sut.load('any_survey_id')
+    const surveyResult = await sut.load('any_survey_id', 'any_account_id')
     expect(surveyResult).toEqual(mockSurveyResultModel())
   })
 })

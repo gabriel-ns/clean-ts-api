@@ -18,12 +18,14 @@ export const mockSurveyResultModel = (): SurveyResultModel => {
     answers: [{
       answer: 'any_answer',
       count: 1,
-      percent: 10
+      percent: 10,
+      isCurrentAnswer: false
     }, {
       answer: 'other_answer',
       image: 'any_image',
       count: 9,
-      percent: 90
+      percent: 90,
+      isCurrentAnswer: false
     }],
     date: new Date()
   }
@@ -31,7 +33,7 @@ export const mockSurveyResultModel = (): SurveyResultModel => {
 
 export const mockLoadSurveyResult = (): LoadSurveyResult => {
   class LoadSurveyResultStub implements LoadSurveyResult {
-    async load (surveyId: string): Promise<SurveyResultModel> {
+    async load (surveyId: string, accountId: string): Promise<SurveyResultModel> {
       return Promise.resolve(mockSurveyResultModel())
     }
   }
